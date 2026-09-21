@@ -1,0 +1,2 @@
+@extends('layouts.admin', ['heading' => $client->name])
+@section('content')<div class="detail-panel"><dl><dt>E-mail</dt><dd>{{ $client->email ?: 'Não informado' }}</dd><dt>Telefone</dt><dd>{{ $client->phone ?: 'Não informado' }}</dd><dt>Pedidos</dt><dd>{{ $client->orders()->count() }}</dd></dl><a class="admin-button" href="{{ route('admin.clients.edit', $client) }}">Editar cliente</a></div>@endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -12,7 +13,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::with('client')->latest()->paginate(10);
+        return view('admin.orders.index', compact('orders'));
     }
 
     /**
@@ -20,7 +22,8 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        $clients = Client::orderBy('name')->get();
+        return view('admin.orders.create', compact('clients'));
     }
 
     /**
@@ -28,7 +31,13 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'client_id' => ['required', 'exists:clients,id'],
+            'total_amount' => ['required', 'numeric', 'min:0'],
+            'status' => ['required', 'in:pending,paid,shipped,cancelled'],
+        ]);
+        Order::create($data);
+        return redirect()->route('admin.orders.index')->with('success', 'Pedido criado com sucesso.');
     }
 
     /**
@@ -36,7 +45,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order->load('client');
+        return view('admin.orders.show', compact('order'));
     }
 
     /**
@@ -44,7 +54,8 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        $clients = Client::orderBy('name')->get();
+        return view('admin.orders.edit', compact('order', 'clients'));
     }
 
     /**
@@ -52,7 +63,13 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $data = $request->validate([
+            'client_id' => ['required', 'exists:clients,id'],
+            'total_amount' => ['required', 'numeric', 'min:0'],
+            'status' => ['required', 'in:pending,paid,shipped,cancelled'],
+        ]);
+        $order->update($data);
+        return redirect()->route('admin.orders.index')->with('success', 'Pedido atualizado com sucesso.');
     }
 
     /**
@@ -60,6 +77,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return redirect()->route('admin.orders.index')->with('success', 'Pedido excluído com sucesso.');
     }
 }

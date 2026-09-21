@@ -1,0 +1,2 @@
+@extends('layouts.admin', ['heading' => $product->name])
+@section('content')<div class="detail-panel"><dl><dt>Descrição</dt><dd>{{ $product->description ?: 'Sem descrição.' }}</dd><dt>Preço</dt><dd>R$ {{ number_format((float) $product->price, 2, ',', '.') }}</dd><dt>Estoque</dt><dd>{{ $product->stock }} unidade(s)</dd></dl><a class="admin-button" href="{{ route('admin.products.edit', $product) }}">Editar produto</a></div>@endsection

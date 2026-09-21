@@ -1,0 +1,2 @@
+@extends('layouts.admin', ['heading' => 'Pedido #' . $order->id])
+@section('content')<div class="detail-panel"><dl><dt>Cliente</dt><dd>{{ $order->client->name }}</dd><dt>Total</dt><dd>R$ {{ number_format((float) $order->total_amount, 2, ',', '.') }}</dd><dt>Status</dt><dd>{{ ucfirst($order->status) }}</dd></dl><a class="admin-button" href="{{ route('admin.orders.edit', $order) }}">Editar pedido</a></div>@endsection

@@ -7,8 +7,8 @@ class Client extends Model
 {
     protected $fillable = ['name', 'phone', 'email'];
 
-    public function sales()
+    public function orders()
     {
-        return $this->hasMany(Sale::class);
+        return $this->hasMany(Order::class);
     }
 }

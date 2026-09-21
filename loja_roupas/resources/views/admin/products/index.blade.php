@@ -1,0 +1,5 @@
+@extends('layouts.admin', ['heading' => 'Produtos'])
+@section('content')
+<div class="admin-toolbar"><p>Gerencie o catálogo da loja.</p><a class="admin-button" href="{{ route('admin.products.create') }}">+ Novo produto</a></div>
+<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Produto</th><th>Preço</th><th>Estoque</th><th>Ações</th></tr></thead><tbody>@forelse ($products as $product)<tr><td><strong>{{ $product->name }}</strong><small>{{ $product->description }}</small></td><td>R$ {{ number_format((float) $product->price, 2, ',', '.') }}</td><td>{{ $product->stock }}</td><td class="actions"><a href="{{ route('admin.products.show', $product) }}">Ver</a><a href="{{ route('admin.products.edit', $product) }}">Editar</a><form method="POST" action="{{ route('admin.products.destroy', $product) }}" onsubmit="return confirm('Excluir este produto?')">@csrf @method('DELETE')<button>Excluir</button></form></td></tr>@empty<tr><td colspan="4" class="empty-table">Nenhum produto cadastrado.</td></tr>@endforelse</tbody></table></div>{{ $products->links() }}
+@endsection
